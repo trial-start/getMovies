@@ -11,6 +11,10 @@ Welcome to the getMovies project! This is a React-based web application that all
 - CSS
 - HTML
 
+## Live Application
+
+You can access the live version of the application by clicking [here](https://9xglrt.csb.app/).
+
 ## Features
 
 - Search for movies and view their details.
