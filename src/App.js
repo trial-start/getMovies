@@ -63,7 +63,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setuserRating] = useState("");
   const isWatched = watched?.map((movie) => movie.imdbID).includes(selectedId);
-  const watchedUserRating = watched.find((movie) => movie.imdbID === selectedId)
+  const watchedUserRating = watched?.find((movie) => movie.imdbID === selectedId)
     ?.userRating;
   const countRef = useRef(0);
   const key = "6d0551f2";
@@ -236,7 +236,7 @@ export default function App() {
     // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
   function handleWatchedDelete(id) {
-    setWatched((watched) => watched.filter((movie) => movie.imdbID !== id));
+    setWatched((watched) => watched?.filter((movie) => movie.imdbID !== id));
   }
 
   // function handleSetQuery(query) {
