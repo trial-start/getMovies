@@ -62,7 +62,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [movie, setMovie] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setuserRating] = useState("");
-  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
+  const isWatched = watched?.map((movie) => movie.imdbID).includes(selectedId);
   const watchedUserRating = watched.find((movie) => movie.imdbID === selectedId)
     ?.userRating;
   const countRef = useRef(0);
