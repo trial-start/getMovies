@@ -14,7 +14,7 @@ const tempWatchedData = [
       "https://m.media-amazon.com/images/M/MV5BMjAxMzY3NjcxNF5BMl5BanBnXkFtZTcwNTI5OTM0Mw@@._V1_SX300.jpg",
     runtime: 148,
     imdbRating: 8.8,
-    userRating: 10
+    userRating: 10,
   },
   {
     imdbID: "tt0088763",
@@ -24,8 +24,8 @@ const tempWatchedData = [
       "https://m.media-amazon.com/images/M/MV5BZmU0M2Y1OGUtZjIxNi00ZjBkLTg1MjgtOWIyNThiZWIwYjRiXkEyXkFqcGdeQXVyMTQxNzMzNDI@._V1_SX300.jpg",
     runtime: 116,
     imdbRating: 8.5,
-    userRating: 9
-  }
+    userRating: 9,
+  },
 ];
 
 function Search({ query, onSetQuery }) {
@@ -36,7 +36,7 @@ function Search({ query, onSetQuery }) {
       function callback(e) {
         if (document.activeElement === inputEl.current) return;
         if (e.code === "Enter") {
-          inputEl.current.focus();
+          inputEl?.current.focus();
           onSetQuery("");
         }
       }
@@ -63,8 +63,9 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setuserRating] = useState("");
   const isWatched = watched?.map((movie) => movie.imdbID).includes(selectedId);
-  const watchedUserRating = watched?.find((movie) => movie.imdbID === selectedId)
-    ?.userRating;
+  const watchedUserRating = watched?.find(
+    (movie) => movie.imdbID === selectedId
+  )?.userRating;
   const countRef = useRef(0);
   const key = "6d0551f2";
 
@@ -85,7 +86,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     Realeased: released,
     Actors: actors,
     Director: director,
-    Genre: genre
+    Genre: genre,
   } = movie;
 
   function handleAdd() {
@@ -97,7 +98,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
       imdbRating: Number(imdbRating),
       runtime: Number(runtime.split(" ")[0]),
       userRating: userRating,
-      countRatingDecisions: countRef.current
+      countRatingDecisions: countRef.current,
     };
     onAddWatched(newWatchedMovie);
     onCloseMovie();
@@ -215,7 +216,11 @@ export default function App() {
   const [selectedId, setSelectedId] = useState(null);
   // const key = "6d0551f2";
 
-  const [watched, setWatched] = useLocalStorageState([], "watched");
+  // const [watched, setWatched] = useLocalStorageState([], "watched");
+  const [watched, setWatched] = useLocalStorageState(
+    tempWatchedData,
+    "watched"
+  );
 
   // const [watched, setWatched] = useState(function () {
   //   const getMovies = localStorage.getItem("watched");
@@ -232,12 +237,14 @@ export default function App() {
 
   function handleAddWatched(movie) {
     setWatched((watched) => {
-      if(watched){
-      [...watched, movie]}
-        else{
-      [movie]}
-    } );
+      if (watched) {
+        return [...watched, movie];
+      } else {
+        return [movie];
+      }
+    });
 
+    console.log(watched);
     // localStorage.setItem("watched", JSON.stringify([...watched, movie]));
   }
   function handleWatchedDelete(id) {
@@ -437,7 +444,9 @@ function Movie({ movie, onSelectMovie }) {
 }
 
 function WatchedSummary({ watched }) {
-  const avgImdbRating = average(watched?.map((movie) => movie.imdbRating));
+  const avgImdbRating = average(
+    watched?.map((movie) => (isNaN(movie.imdbRating) ? 0 : movie.imdbRating))
+  );
   const avgUserRating = average(watched?.map((movie) => movie.userRating));
   const avgRuntime = average(watched?.map((movie) => movie.runtime));
 
@@ -451,15 +460,15 @@ function WatchedSummary({ watched }) {
         </p>
         <p>
           <span>⭐️</span>
-          <span>{avgImdbRating}</span>
+          <span>{Number(avgImdbRating).toFixed(2)}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{avgUserRating}</span>
+          <span>{Number(avgUserRating).toFixed(2)}</span>
         </p>
         <p>
           <span>⏳</span>
-          <span>{avgRuntime} min</span>
+          <span>{Number(avgRuntime).toFixed(2)} min</span>
         </p>
       </div>
     </div>
@@ -470,7 +479,7 @@ function WatchedMoviesList({
   watched,
   onWatchedDelete,
   onSelectMovie,
-  onCloseMovie
+  onCloseMovie,
 }) {
   return (
     <ul className="list">
